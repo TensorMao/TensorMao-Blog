@@ -6,11 +6,7 @@ on:
     schedule:
         # Runs everyday at 8:00 AM
         - cron: "0 0 * * *"
-    #push:
-    #    branches: [master]
-    #pull_request:
-    #    branches: [master]
-
+    
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -25,7 +21,7 @@ jobs:
             - name: Setup Hugo
               uses: peaceiris/actions-hugo@v2
               with:
-                  hugo-version: "latest"
+                  hugo-version: "extended"
 
             - name: Build Web
               run: hugo
@@ -38,6 +34,10 @@ jobs:
                   PUBLISH_BRANCH: master
                   PUBLISH_DIR: ./public
                   commit_message: ${{ github.event.head_commit.message }}
+#push:
+    #    branches: [master] 
+    #pull_request:
+    #    branches: [master]
 
         # permissions:
         #     # Give the default GITHUB_TOKEN write permission to commit and push the

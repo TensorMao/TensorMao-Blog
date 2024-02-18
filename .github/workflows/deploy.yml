@@ -30,10 +30,10 @@ jobs:
             - name: Deploy Web
               uses: peaceiris/actions-gh-pages@v3
               with:
-                  PERSONAL_TOKEN: ${{secrets.ACTION_DEPLOY_KEY}}
-                  EXTERNAL_REPOSITORY: TensorMao/TensorMao.github.io
-                  PUBLISH_BRANCH: main
-                  PUBLISH_DIR: ./public
+                  personal_token: ${{secrets.PERSONAL_TOKEN}}
+                  external_repository: TensorMao/TensorMao.github.io
+                  publish_branch: main
+                  publish_dir: ./public
                   commit_message: ${{ github.event.head_commit.message }}
 #push:
     #    branches: [master] 

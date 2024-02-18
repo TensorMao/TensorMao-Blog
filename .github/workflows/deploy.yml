@@ -2,48 +2,77 @@ name: Deploy to Github Pages
 
 on:
     push:
-        branches: [master]
-    pull_request:
-        branches: [master]
+    workflow_dispatch:
+    schedule:
+        # Runs everyday at 8:00 AM
+        - cron: "0 0 * * *"
+    #push:
+    #    branches: [master]
+    #pull_request:
+    #    branches: [master]
 
 jobs:
     build:
         runs-on: ubuntu-latest
 
-        permissions:
-            # Give the default GITHUB_TOKEN write permission to commit and push the
-            # added or changed files to the repository.
-            contents: write
-
         steps:
-            - uses: actions/checkout@v3
-
-            - name: Cache Hugo resources
-              uses: actions/cache@v3
-              env:
-                  cache-name: cache-hugo-resources
+            - name: Checkout
+              uses: actions/checkout@v2
               with:
-                  path: resources
-                  key: ${{ env.cache-name }}
-
-            - uses: actions/setup-go@v4
-              with:
-                  go-version: "^1.17.0"
-            - run: go version
+                  submodules: true
+                  fetch-depth: 0
 
             - name: Setup Hugo
               uses: peaceiris/actions-hugo@v2
               with:
                   hugo-version: "latest"
-                  extended: true
 
-            - name: Build
-              run: hugo --minify --gc
+            - name: Build Web
+              run: hugo
 
-            - name: Deploy 🚀
-              uses: JamesIves/github-pages-deploy-action@v4
+            - name: Deploy Web
+              uses: peaceiris/actions-gh-pages@v3
               with:
-                  branch: gh-pages
-                  folder: public
-                  clean: true
-                  single-commit: true
+                  PERSONAL_TOKEN: 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
+                  EXTERNAL_REPOSITORY: TensorMao/TensorMao.github.io
+                  PUBLISH_BRANCH: master
+                  PUBLISH_DIR: ./public
+                  commit_message: ${{ github.event.head_commit.message }}
+
+        # permissions:
+        #     # Give the default GITHUB_TOKEN write permission to commit and push the
+        #     # added or changed files to the repository.
+        #     contents: write
+
+        # steps:
+        #     - uses: actions/checkout@v3
+
+        #     - name: Cache Hugo resources
+        #       uses: actions/cache@v3
+        #       env:
+        #           cache-name: cache-hugo-resources
+        #       with:
+        #           path: resources
+        #           key: ${{ env.cache-name }}
+
+        #     - uses: actions/setup-go@v4
+        #       with:
+        #           go-version: "^1.17.0"
+        #     - run: go version
+
+        #     - name: Setup Hugo
+        #       uses: peaceiris/actions-hugo@v2
+        #       with:
+        #           hugo-version: "latest"
+        #           extended: true
+
+        #     - name: Build
+        #       run: hugo --minify --gc
+
+        #     - name: Deploy 🚀
+        #       uses: JamesIves/github-pages-deploy-action@v4
+        #       with:
+        #           branch: gh-pages
+        #           folder: public
+        #           clean: true
+        #           single-commit: true

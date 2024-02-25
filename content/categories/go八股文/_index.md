@@ -1,6 +1,6 @@
 ---
-title: Example Category
-description: A description of this category
+title: Go 八股文
+description: Go 八股文合集
 image:
 
 # Badge style
